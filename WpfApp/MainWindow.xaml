@@ -1,0 +1,85 @@
+﻿<Window x:Class="YourNamespace.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="720" Width="1280">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Column="0" Margin="10">
+            <TextBlock Text="LISTA BUDŻETÓW" FontSize="20" Margin="0,0,0,20"/>
+            <!-- Lista Budżetów Placeholder -->
+            <ListBox Name="BudgetListBox" BorderBrush="Black" BorderThickness="1" Height="200" Margin="0,0,0,20" SelectionChanged="btnShowCreateTransactionPanel_Click" />
+
+            <Button Name="BtnCreateBudget" Content="Stwórz budżet" Margin="0,5" Click="btnShowCreateBudgetForm_Click" />
+            <Button Name="BtnRemoveBudget" Content="Usuń budżet" Margin="0,5" Click="btnRemoveBudget_Click" />
+            <Button Name="BtnShowBudget" Content="Wyświetl statystyki" Margin="0,5" Click="btnShowStats_Click" />
+
+            <StackPanel Name="CreateTransactionPanel" Visibility="Collapsed" Margin="0,20,0,20">
+                <Button Name="BtnAddTransaction" Content="Dodaj transakcję"  Click="btnShowCreateTransactionForm_Click" />
+            </StackPanel>
+            <StackPanel Name="ModifyTransactionPanel" Visibility="Collapsed" Margin="0,20,0,0">
+                <Button Name="BtnRmvTransaction" Content="Usuń transakcję" Background="Red" Margin="0,5" Click="btnRemoveTransaction_Click" />
+                <Button Name="BtnShowTransaction" Content="Wyświetl transakcję" Margin="0,5" Click="btnShowTransactionDetails_Click"/>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Margin="10">
+
+            <!-- Lista transakcji budżetu -->
+            <Border x:Name="StatsField" BorderBrush="BlueViolet" BorderThickness="1" Padding="10" Visibility="Collapsed">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <!-- [TODO] TA LISTA MA WYSWIETLAC TRANSAKCJE DLA ZAZNACZONEGO BUDZETU -->
+                    <ListBox Name="TransactionsListBox" Grid.Column="0" Height="600" Margin="0,10" SelectionChanged="btnShowTransactionDetails_Click" />
+                    <!-- [TODO] TA LISTA MA WYSWIETLAC PRODUKTY DLA ZAZNACZONEJ TRANSAKCJI -->
+                    <ListBox Name="TransactionDetailsListBox" Grid.Column="1"  Height="600" Margin="0,10"  Visibility="Collapsed" />
+                </Grid>
+            </Border>
+
+            <!-- Formularz Budżetu -->
+            <Border x:Name="BudgetForm" BorderBrush="Blue" BorderThickness="1" Padding="10" Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock Text="Nazwa:"/>
+                    <TextBox Name="BudgetName" Margin="0,0,0,10"/>
+                    <TextBlock Text="Zarobek:"/>
+                    <TextBox Name="MonthSalary" Margin="0,0,0,10" />
+                    <Button Content="Stwórz Budżet" Margin="0,10,0,0" Click="btnAddBudget_Click"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Formularz Transakcji -->
+            <Border x:Name="TransactionForm" BorderBrush="Green" BorderThickness="1" Padding="10" Visibility="Collapsed">
+                <StackPanel>
+                    <TextBlock Text="Nazwa:"/>
+                    <TextBox Name="TransactionName" Margin="0,0,0,10"/>
+                    <TextBlock Text="Kategoria:"/>
+                    <ComboBox Name="TransactionCategory" />
+                    <TextBlock Text="Data (opcjonalnie):"/>
+                    <TextBox Name="TransactionDate" Margin="0,0,0,10"/>
+                    <Button Content="Stwórz Transakcje" Margin="0,10,0,0" Click="btnCreateTransaction_Click" />
+
+                    <!-- Lista Dodanych Produktów -->
+                    <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
+                        <TextBlock>Nazwa:</TextBlock>
+                        <TextBox Name="ProductName" Width="150" Margin="0,0,10,0" />
+                        <TextBlock>Cena:</TextBlock>
+                        <TextBox Name="ProductPrice" Width="100" Margin="0,0,10,0" />
+                        <TextBlock>Ilość:</TextBlock>
+                        <TextBox Name="ProductQuantity" Width="50" Margin="0,0,10,0" />
+                        <Button Content="dodaj" Margin="0,0,10,0" Click="btnAddProduct_Click" />
+                        <!-- [TODO]: Dodac zasade dzialania przycisku do usuwania produktow -->
+                        <Button Content="usun" Margin="0,0,10,0"/>
+                    </StackPanel>
+
+                    <ListBox Name="ProductListBox" Background="LightYellow" Height="100" Margin="0,10"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </Grid>
+</Window>
