@@ -22,7 +22,6 @@
             </StackPanel>
             <StackPanel Name="ModifyTransactionPanel" Visibility="Collapsed" Margin="0,20,0,0">
                 <Button Name="BtnRmvTransaction" Content="Usuń transakcję" Background="Red" Margin="0,5" Click="btnRemoveTransaction_Click" />
-                <Button Name="BtnShowTransaction" Content="Wyświetl transakcję" Margin="0,5" Click="btnShowTransactionDetails_Click"/>
             </StackPanel>
         </StackPanel>
 
@@ -35,9 +34,9 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <!-- [TODO] TA LISTA MA WYSWIETLAC TRANSAKCJE DLA ZAZNACZONEGO BUDZETU -->
-                    <ListBox Name="TransactionsListBox" Grid.Column="0" Height="600" Margin="0,10" SelectionChanged="btnShowTransactionDetails_Click" />
-                    <!-- [TODO] TA LISTA MA WYSWIETLAC PRODUKTY DLA ZAZNACZONEJ TRANSAKCJI -->
+                    <!-- LISTA TRANSAKCJI BUDZETU-->
+                    <ListBox Name="TransactionsListBox" Grid.Column="0" Height="600" Margin="0,10" SelectionChanged="btnShowTransactionDetails_Click"  />
+                    <!-- LISTA PRODUKTÓW TRANSAKCJI -->
                     <ListBox Name="TransactionDetailsListBox" Grid.Column="1"  Height="600" Margin="0,10"  Visibility="Collapsed" />
                 </Grid>
             </Border>
@@ -59,8 +58,8 @@
                     <TextBlock Text="Nazwa:"/>
                     <TextBox Name="TransactionName" Margin="0,0,0,10"/>
                     <TextBlock Text="Kategoria:"/>
-                    <ComboBox Name="TransactionCategory" />
-                    <TextBlock Text="Data (opcjonalnie):"/>
+                    <ComboBox Name="TransactionCategory" SelectedIndex="0" />
+                    <TextBlock Text="Data (opcjonalnie) Format: dd/MM/yyyy" />
                     <TextBox Name="TransactionDate" Margin="0,0,0,10"/>
                     <Button Content="Stwórz Transakcje" Margin="0,10,0,0" Click="btnCreateTransaction_Click" />
 
@@ -73,8 +72,7 @@
                         <TextBlock>Ilość:</TextBlock>
                         <TextBox Name="ProductQuantity" Width="50" Margin="0,0,10,0" />
                         <Button Content="dodaj" Margin="0,0,10,0" Click="btnAddProduct_Click" />
-                        <!-- [TODO]: Dodac zasade dzialania przycisku do usuwania produktow -->
-                        <Button Content="usun" Margin="0,0,10,0"/>
+                        <Button Content="usun" Margin="0,0,10,0" Click="btnRemoveProduct_Click" />
                     </StackPanel>
 
                     <ListBox Name="ProductListBox" Background="LightYellow" Height="100" Margin="0,10"/>

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Core.Models
 {
@@ -14,6 +15,6 @@ namespace Core.Models
         {
         }
 
-        public List<Budget> Budgets { get; set; } = new List<Budget>();
+        public ObservableCollection<Budget> Budgets { get; set; } = new ObservableCollection<Budget>();
     }
 }

@@ -21,5 +21,11 @@ namespace Core.DTOs
         public Product ToEntity()
             => Product.New(Name, Count, Price);
 
+        public override string ToString()
+        {
+            return $"{Name} - {Price} z³ - {Count} szt";
+        }
     }
+
+
 }

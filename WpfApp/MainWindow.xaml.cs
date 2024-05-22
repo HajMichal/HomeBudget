@@ -24,8 +24,7 @@ namespace YourNamespace
     public partial class MainWindow : Window
     {
         // [TODO]: Dodac zaleznosci wyswietlanych transakcji wzgledem budzetu oraz wyswietlanych produktow wzgledem transakcji
-        private ObservableCollection<BudgetDTO> budgets;
-        private List<CreateProductDTO> products;
+        private ObservableCollection<CreateProductDTO> products;
         private DatabaseSingleton db;
 
         public MainWindow()
@@ -34,18 +33,17 @@ namespace YourNamespace
             LoadCategories();
 
             db = DatabaseSingleton.Instance;
-            budgets = new ObservableCollection<BudgetDTO>();
-            db.Budgets.ForEach(p => budgets.Add(BudgetDTO.FromEntity(p)));
-            products = new List<CreateProductDTO>();
-
-            BudgetListBox.ItemsSource = budgets;
+            products = new ObservableCollection<CreateProductDTO>();
+            BudgetListBox.ItemsSource = db.Budgets;
             TransactionDetailsListBox.ItemsSource = null;
+            ProductListBox.ItemsSource = products;
         }
 
 
         // BUDGET
         private void btnShowCreateBudgetForm_Click(object sender, RoutedEventArgs e)
         {
+            TransactionsListBox.SelectedIndex = -1;
             if (BudgetForm.Visibility == Visibility.Collapsed)
             {
                 // display budget form
@@ -67,13 +65,18 @@ namespace YourNamespace
             string budgetName = BudgetName.Text;
             string monthSalary = MonthSalary.Text;
 
+            TransactionsListBox.SelectedIndex = -1;
+            BudgetListBox.SelectedIndex = -1;
             if (!string.IsNullOrWhiteSpace(budgetName) && !string.IsNullOrWhiteSpace(monthSalary))
             {
                 if (decimal.TryParse(monthSalary, out decimal income))
                 {
+                    BudgetForm.Visibility = Visibility.Collapsed;
                     var service = new BudgetServices();
                     var newBudget = new CreateBudgetDTO { Name = budgetName, MonthSalary = income };
                     service.Create(newBudget);
+
+                    MessageBox.Show("Stworzono budżet");
                 }
                 else
                 {
@@ -92,6 +95,9 @@ namespace YourNamespace
 
         private void btnRemoveBudget_Click(object sender, RoutedEventArgs e)
         {
+            TransactionsListBox.SelectedIndex = -1;
+            BudgetListBox.SelectedIndex = -1;
+
             if (BudgetListBox.SelectedItem is Budget selectdBudget)
             {
                 var service = new BudgetServices();
@@ -105,12 +111,15 @@ namespace YourNamespace
 
         private void btnShowStats_Click(object sender, RoutedEventArgs e)
         {
-            if(BudgetListBox.SelectedItem is Budget)
+            TransactionsListBox.SelectedIndex = -1;
+
+            if (BudgetListBox.SelectedItem is Budget selectedBudget)
             {
                 if (StatsField.Visibility == Visibility.Collapsed)
                 {
                     // display stat field
                     StatsField.Visibility = Visibility.Visible;
+                    TransactionsListBox.ItemsSource = selectedBudget.Transactions;
 
                     // hide other formulas / fields
                     BudgetForm.Visibility = Visibility.Collapsed;
@@ -130,6 +139,7 @@ namespace YourNamespace
         // TRANSACTIONS
         private void btnShowCreateTransactionForm_Click(object sender, RoutedEventArgs e)
         {
+            TransactionsListBox.SelectedIndex = -1;
             if (TransactionForm.Visibility == Visibility.Collapsed)
             {
                 // display transaction form
@@ -159,6 +169,8 @@ namespace YourNamespace
 
         private void btnCreateTransaction_Click(object sender, RoutedEventArgs e)
         {
+            TransactionsListBox.SelectedIndex = -1;
+
             if (BudgetListBox.SelectedItem is Budget selectedBudget)
             {
                 string transactionName = TransactionName.Text;
@@ -178,12 +190,12 @@ namespace YourNamespace
                         Name = transactionName, 
                         FromDate = parsedDate, 
                         Category = transactionCategory,
-                        Products = products
+                        Products = products.ToList(),
                     };
                     service.AddTransaction(newTransaction, selectedBudget.Id);
 
                     products.Clear();
-
+                    TransactionForm.Visibility = Visibility.Collapsed;
                     MessageBox.Show("Transakcja została zapisana");
                 }
                 else
@@ -205,8 +217,14 @@ namespace YourNamespace
             if (TransactionsListBox.SelectedItem is Transaction selectedTransaction &&
                 BudgetListBox.SelectedItem is Budget selectedBudget)
             {
+                StatsField.Visibility = Visibility.Collapsed;
+                ModifyTransactionPanel.Visibility = Visibility.Collapsed;
+                TransactionDetailsListBox.ItemsSource = null;
+                TransactionsListBox.SelectedIndex = -1;
+
                 var service = new BudgetServices();
                 service.RemoveTransaction(selectedTransaction.Id, selectedBudget.Id);
+                MessageBox.Show("Transakcja została pomyślnie usunięta");
             }
             else
             {
@@ -218,8 +236,8 @@ namespace YourNamespace
         {
             if (TransactionsListBox.SelectedItem is Transaction selectedTransaction)
             {   
-
-                TransactionDetailsListBox.ItemsSource = selectedTransaction.Products;
+                // Ta linijka psuje wyswietlanie transakcji (gdy ona dziala pokazuje tylko pierwsza transakcje)
+                // TransactionDetailsListBox.ItemsSource = selectedTransaction.Products;
                 ModifyTransactionPanel.Visibility = Visibility.Visible;
                 TransactionDetailsListBox.Visibility = Visibility.Visible;
             }
@@ -263,6 +281,18 @@ namespace YourNamespace
             else
             {
                 MessageBox.Show("Wypełnij dane w każdym polu.");
+            }
+        }
+
+        private void btnRemoveProduct_Click(object sender, RoutedEventArgs e)
+        {
+            if (ProductListBox.SelectedItem is CreateProductDTO selectedProduct)
+            {
+                products.Remove(selectedProduct);
+            }
+            else
+            {
+                MessageBox.Show("Wybierz produkt do usunięcia.");
             }
         }
 
