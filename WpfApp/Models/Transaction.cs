@@ -44,7 +44,7 @@ namespace Core.Models
 
         public override string ToString()
         {
-            return $"{Name} - {Category} - {TotalCost} z³";
+            return $"{Name} - {Category} -> {TotalCost} z³";
         }
     }
 }

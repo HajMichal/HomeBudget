@@ -37,7 +37,7 @@ namespace Core.Models
 
         public override string ToString()
         {
-            return $"{Name} - {Price} z³ - {Count} szt";
+            return $"{Name} - {Count} x {Price} z³ -> {TotalPrice} z³";
         }
     }
 }

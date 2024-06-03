@@ -15,6 +15,6 @@ namespace Core.Models
         {
         }
 
-        public ObservableCollection<Budget> Budgets { get; set; } = new ObservableCollection<Budget>();
+        public List<Budget> Budgets { get; set; } = new List<Budget>();
     }
 }

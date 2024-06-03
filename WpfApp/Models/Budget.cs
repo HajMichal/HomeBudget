@@ -20,6 +20,8 @@ namespace Core.Models
         {
             if (!name.HasValue())
                 throw new NameIsRequiredException();
+
+            // todo poprawic na polskie exception i rowniez tutaj zrobic parsowanie i wywalac wyjatki
         
             return new Budget(name, monthSalary);
         }
@@ -59,7 +61,7 @@ namespace Core.Models
 
         public override string ToString()
         {
-            return $"{Name} - {MonthSalary}";
+            return $"{Name}";
         }
     }
 }

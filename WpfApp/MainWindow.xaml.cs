@@ -1,4 +1,4 @@
-﻿using System;
+﻿  using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -23,7 +23,6 @@ namespace YourNamespace
 {
     public partial class MainWindow : Window
     {
-        // [TODO]: Dodac zaleznosci wyswietlanych transakcji wzgledem budzetu oraz wyswietlanych produktow wzgledem transakcji
         private ObservableCollection<CreateProductDTO> products;
         private DatabaseSingleton db;
 
@@ -31,77 +30,77 @@ namespace YourNamespace
         {
             InitializeComponent();
             LoadCategories();
-
             db = DatabaseSingleton.Instance;
+
             products = new ObservableCollection<CreateProductDTO>();
-            BudgetListBox.ItemsSource = db.Budgets;
-            TransactionDetailsListBox.ItemsSource = null;
             ProductListBox.ItemsSource = products;
+   
+            TransactionDetailsListBox.ItemsSource = null;
+            BudgetListBox.ItemsSource = db.Budgets;
         }
 
-
-        // BUDGET
         private void btnShowCreateBudgetForm_Click(object sender, RoutedEventArgs e)
         {
-            TransactionsListBox.SelectedIndex = -1;
-            if (BudgetForm.Visibility == Visibility.Collapsed)
-            {
-                // display budget form
                 BudgetForm.Visibility = Visibility.Visible;
-
-                // hide other formulas / lists
-                TransactionForm.Visibility = Visibility.Collapsed;
                 StatsField.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                BudgetForm.Visibility = Visibility.Collapsed;
-            }
+                TransactionForm.Visibility = Visibility.Collapsed;
+                ModifyTransactionPanel.Visibility = Visibility.Collapsed;
         }
 
         private void btnAddBudget_Click(object sender, RoutedEventArgs e)
         {
-            // Get values from inputs
-            string budgetName = BudgetName.Text;
-            string monthSalary = MonthSalary.Text;
-
-            TransactionsListBox.SelectedIndex = -1;
-            BudgetListBox.SelectedIndex = -1;
-            if (!string.IsNullOrWhiteSpace(budgetName) && !string.IsNullOrWhiteSpace(monthSalary))
+            if (!decimal.TryParse(MonthSalary.Text, out decimal salary))
             {
-                if (decimal.TryParse(monthSalary, out decimal income))
-                {
-                    BudgetForm.Visibility = Visibility.Collapsed;
-                    var service = new BudgetServices();
-                    var newBudget = new CreateBudgetDTO { Name = budgetName, MonthSalary = income };
-                    service.Create(newBudget);
-
-                    MessageBox.Show("Stworzono budżet");
-                }
-                else
-                {
-                    MessageBox.Show("Zarobek należy wpisać jako liczbę");
-                }
-
-                // Clear input fields
-                BudgetName.Clear();
-                MonthSalary.Clear();
+                MessageBox.Show("Zarobek należy wpisać jako liczbę");
             }
-            else
+            var service = new BudgetServices();
+            var newBudget = new CreateBudgetDTO 
+            { 
+                Name = BudgetName.Text,
+                MonthSalary = salary 
+            };
+
+            try
             {
-                MessageBox.Show("Wypełnij dane w każdym polu.");
+                service.Create(newBudget);
             }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+
+
+            BudgetListBox.Items.Refresh();
+            MessageBox.Show("Stworzono budżet");
+
+            BudgetName.Clear();
+            MonthSalary.Clear();
+            BudgetForm.Visibility = Visibility.Collapsed;
         }
 
         private void btnRemoveBudget_Click(object sender, RoutedEventArgs e)
         {
-            TransactionsListBox.SelectedIndex = -1;
-            BudgetListBox.SelectedIndex = -1;
-
-            if (BudgetListBox.SelectedItem is Budget selectdBudget)
+            if (BudgetListBox.SelectedItem is Budget selectedBudget)
             {
+                TransactionsListBox.SelectedItem = null;
                 var service = new BudgetServices();
-                service.Remove(selectdBudget.Id);
+
+                try
+                {
+                    service.Remove(selectedBudget.Id);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+
+                BudgetListBox.Items.Refresh();
+                StatsField.Visibility = Visibility.Collapsed;
+                TransactionForm.Visibility = Visibility.Collapsed;
+                ModifyTransactionPanel.Visibility = Visibility.Collapsed;
+                MessageBox.Show("Pomyślnie usunięto budżet.");
             }
             else
             {
@@ -111,23 +110,14 @@ namespace YourNamespace
 
         private void btnShowStats_Click(object sender, RoutedEventArgs e)
         {
-            TransactionsListBox.SelectedIndex = -1;
-
             if (BudgetListBox.SelectedItem is Budget selectedBudget)
             {
                 if (StatsField.Visibility == Visibility.Collapsed)
                 {
-                    // display stat field
-                    StatsField.Visibility = Visibility.Visible;
-                    TransactionsListBox.ItemsSource = selectedBudget.Transactions;
-
-                    // hide other formulas / fields
                     BudgetForm.Visibility = Visibility.Collapsed;
                     TransactionForm.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    StatsField.Visibility = Visibility.Collapsed;
+                    StatsField.Visibility = Visibility.Visible;
+                    TransactionsListBox.ItemsSource = selectedBudget.Transactions;
                 }
             }
             else
@@ -136,22 +126,14 @@ namespace YourNamespace
             }
         }
 
-        // TRANSACTIONS
         private void btnShowCreateTransactionForm_Click(object sender, RoutedEventArgs e)
         {
-            TransactionsListBox.SelectedIndex = -1;
             if (TransactionForm.Visibility == Visibility.Collapsed)
             {
-                // display transaction form
                 TransactionForm.Visibility = Visibility.Visible;
-
-                // hide other formulas / lists
                 BudgetForm.Visibility = Visibility.Collapsed;
                 StatsField.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                TransactionForm.Visibility = Visibility.Collapsed;
+                ModifyTransactionPanel.Visibility = Visibility.Collapsed;
             }
         }
         private void btnShowCreateTransactionPanel_Click(object sender, SelectionChangedEventArgs e)
@@ -159,50 +141,45 @@ namespace YourNamespace
             if (BudgetListBox.SelectedItem != null)
             {
                 CreateTransactionPanel.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                CreateTransactionPanel.Visibility = Visibility.Collapsed;
+                BudgetForm.Visibility = Visibility.Collapsed;
             }
         }
 
 
         private void btnCreateTransaction_Click(object sender, RoutedEventArgs e)
         {
-            TransactionsListBox.SelectedIndex = -1;
-
             if (BudgetListBox.SelectedItem is Budget selectedBudget)
             {
-                string transactionName = TransactionName.Text;
-                Category transactionCategory = (Category)TransactionCategory.SelectedItem;
-                string transactionDate = TransactionDate.Text;
+                var service = new BudgetServices();
 
-                if (!string.IsNullOrWhiteSpace(transactionName))
+                DateTime? parsedDate = string.IsNullOrEmpty(TransactionDate.Text) ?
+                     (DateTime?)null :
+                     DateTime.Parse(TransactionDate.Text);
+
+                var newTransaction = new CreateTransactionDTO 
+                { 
+                     Name = TransactionName.Text, 
+                     FromDate = parsedDate, 
+                     Category = (Category)TransactionCategory.SelectedItem,
+                     Products = products.ToList(),
+                };
+                // todo zrobic tutaj string i dopiero w service sprawdzac date
+                try
                 {
-                    var service = new BudgetServices();
-
-                    DateTime? parsedDate = string.IsNullOrEmpty(transactionDate) ?
-                        (DateTime?)null :
-                        DateTime.Parse(transactionDate);
-
-                    var newTransaction = new CreateTransactionDTO 
-                    { 
-                        Name = transactionName, 
-                        FromDate = parsedDate, 
-                        Category = transactionCategory,
-                        Products = products.ToList(),
-                    };
                     service.AddTransaction(newTransaction, selectedBudget.Id);
-
-                    products.Clear();
-                    TransactionForm.Visibility = Visibility.Collapsed;
-                    MessageBox.Show("Transakcja została zapisana");
                 }
-                else
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Wypełnij dane w każdym polu.");
+                    MessageBox.Show(ex.Message);
+                    return;
                 }
 
+                MessageBox.Show("Transakcja została zapisana");
+
+                TransactionForm.Visibility = Visibility.Collapsed;
+                BudgetForm.Visibility = Visibility.Collapsed;
+                TransactionsListBox.Items.Refresh();
+                products.Clear();
                 TransactionName.Clear();
                 TransactionDate.Clear();
             }
@@ -220,10 +197,19 @@ namespace YourNamespace
                 StatsField.Visibility = Visibility.Collapsed;
                 ModifyTransactionPanel.Visibility = Visibility.Collapsed;
                 TransactionDetailsListBox.ItemsSource = null;
-                TransactionsListBox.SelectedIndex = -1;
 
                 var service = new BudgetServices();
-                service.RemoveTransaction(selectedTransaction.Id, selectedBudget.Id);
+                try
+                {
+                    service.RemoveTransaction(selectedTransaction.Id, selectedBudget.Id);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+
+                TransactionsListBox.Items.Refresh();
                 MessageBox.Show("Transakcja została pomyślnie usunięta");
             }
             else
@@ -235,53 +221,43 @@ namespace YourNamespace
         private void btnShowTransactionDetails_Click(object sender, RoutedEventArgs e)
         {
             if (TransactionsListBox.SelectedItem is Transaction selectedTransaction)
-            {   
-                // Ta linijka psuje wyswietlanie transakcji (gdy ona dziala pokazuje tylko pierwsza transakcje)
-                // TransactionDetailsListBox.ItemsSource = selectedTransaction.Products;
+            {
+                TransactionDetailsListBox.ItemsSource = selectedTransaction.Products;
                 ModifyTransactionPanel.Visibility = Visibility.Visible;
                 TransactionDetailsListBox.Visibility = Visibility.Visible;
             }
-            else
-            {
-                ModifyTransactionPanel.Visibility = Visibility.Collapsed;
-                TransactionDetailsListBox.Visibility = Visibility.Collapsed;
-            }
         }
 
-        // PRODUCT
         private void btnAddProduct_Click(object sender, RoutedEventArgs e)
         {
-            // Get values from inputs
-            string productName = ProductName.Text;
-            string productPrice = ProductPrice.Text;
-            string productQuantity = ProductQuantity.Text;
+           if (decimal.TryParse(ProductPrice.Text, out decimal parsedPrice) && uint.TryParse(ProductQuantity.Text, out uint parsedQuantity))
+           {
+              var newProduct = new CreateProductDTO 
+              { 
+                 Name = ProductName.Text,
+                 Count = parsedQuantity, 
+                 Price = parsedPrice 
+              };
 
-            if (!string.IsNullOrWhiteSpace(productName) && !string.IsNullOrWhiteSpace(productPrice) && !string.IsNullOrWhiteSpace(productQuantity))
-            {
-                if (decimal.TryParse(productPrice, out decimal parsedPrice) && uint.TryParse(productQuantity, out uint parsedQuantity))
+                try
                 {
-                    var newProduct = new CreateProductDTO 
-                    { 
-                        Name = productName, 
-                        Count = parsedQuantity, 
-                        Price = parsedPrice 
-                    };
                     products.Add(newProduct);
-                }
-                else
+                }   
+                catch (Exception ex)
                 {
-                    MessageBox.Show("Ilość oraz cenę należy wpisać jako liczbę");
+                    MessageBox.Show(ex.Message);
+                    return;
                 }
 
-                // Clear input fields
                 ProductName.Clear();
                 ProductPrice.Clear();
                 ProductQuantity.Clear();
-            }
-            else
-            {
-                MessageBox.Show("Wypełnij dane w każdym polu.");
-            }
+                ProductListBox.Items.Refresh();
+           }
+           else
+           {
+                MessageBox.Show("Ilość oraz cenę należy wpisać jako liczbę");
+           }
         }
 
         private void btnRemoveProduct_Click(object sender, RoutedEventArgs e)
@@ -289,6 +265,7 @@ namespace YourNamespace
             if (ProductListBox.SelectedItem is CreateProductDTO selectedProduct)
             {
                 products.Remove(selectedProduct);
+                ProductListBox.Items.Refresh();
             }
             else
             {
@@ -300,8 +277,5 @@ namespace YourNamespace
         {
             TransactionCategory.ItemsSource = Enum.GetValues(typeof(Category)).Cast<Category>();
         }
-
     }
 }
-
-

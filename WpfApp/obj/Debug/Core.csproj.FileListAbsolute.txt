@@ -12,3 +12,17 @@ C:\Programowanie\Domain\WpfApp\bin\Debug\WpfApp.exe
 C:\Programowanie\Domain\WpfApp\bin\Debug\WpfApp.pdb
 C:\Programowanie\Domain\WpfApp\obj\Debug\WpfApp.exe
 C:\Programowanie\Domain\WpfApp\obj\Debug\WpfApp.pdb
+C:\Users\Dominik\source\repos\HomeBudget\WpfApp\bin\Debug\WpfApp.exe.config
+C:\Users\Dominik\source\repos\HomeBudget\WpfApp\bin\Debug\WpfApp.exe
+C:\Users\Dominik\source\repos\HomeBudget\WpfApp\bin\Debug\WpfApp.pdb
+C:\Users\Dominik\source\repos\HomeBudget\WpfApp\obj\Debug\Core.csproj.AssemblyReference.cache
+C:\Users\Dominik\source\repos\HomeBudget\WpfApp\obj\Debug\MainWindow.baml
+C:\Users\Dominik\source\repos\HomeBudget\WpfApp\obj\Debug\MainWindow.g.cs
+C:\Users\Dominik\source\repos\HomeBudget\WpfApp\obj\Debug\App.g.cs
+C:\Users\Dominik\source\repos\HomeBudget\WpfApp\obj\Debug\WpfApp_MarkupCompile.cache
+C:\Users\Dominik\source\repos\HomeBudget\WpfApp\obj\Debug\WpfApp.g.resources
+C:\Users\Dominik\source\repos\HomeBudget\WpfApp\obj\Debug\WpfApp.Properties.Resources.resources
+C:\Users\Dominik\source\repos\HomeBudget\WpfApp\obj\Debug\Core.csproj.GenerateResource.cache
+C:\Users\Dominik\source\repos\HomeBudget\WpfApp\obj\Debug\Core.csproj.CoreCompileInputs.cache
+C:\Users\Dominik\source\repos\HomeBudget\WpfApp\obj\Debug\WpfApp.exe
+C:\Users\Dominik\source\repos\HomeBudget\WpfApp\obj\Debug\WpfApp.pdb

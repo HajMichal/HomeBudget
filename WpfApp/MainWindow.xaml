@@ -10,7 +10,7 @@
 
         <StackPanel Grid.Column="0" Margin="10">
             <TextBlock Text="LISTA BUDŻETÓW" FontSize="20" Margin="0,0,0,20"/>
-            <!-- Lista Budżetów Placeholder -->
+            <!-- Lista Budżetów -->
             <ListBox Name="BudgetListBox" BorderBrush="Black" BorderThickness="1" Height="200" Margin="0,0,0,20" SelectionChanged="btnShowCreateTransactionPanel_Click" />
 
             <Button Name="BtnCreateBudget" Content="Stwórz budżet" Margin="0,5" Click="btnShowCreateBudgetForm_Click" />
@@ -61,7 +61,6 @@
                     <ComboBox Name="TransactionCategory" SelectedIndex="0" />
                     <TextBlock Text="Data (opcjonalnie) Format: dd/MM/yyyy" />
                     <TextBox Name="TransactionDate" Margin="0,0,0,10"/>
-                    <Button Content="Stwórz Transakcje" Margin="0,10,0,0" Click="btnCreateTransaction_Click" />
 
                     <!-- Lista Dodanych Produktów -->
                     <StackPanel Orientation="Horizontal" Margin="0,20,0,0">
@@ -74,6 +73,8 @@
                         <Button Content="dodaj" Margin="0,0,10,0" Click="btnAddProduct_Click" />
                         <Button Content="usun" Margin="0,0,10,0" Click="btnRemoveProduct_Click" />
                     </StackPanel>
+
+                    <Button Content="Stwórz Transakcje" Margin="0,10,0,0" Click="btnCreateTransaction_Click" />
 
                     <ListBox Name="ProductListBox" Background="LightYellow" Height="100" Margin="0,10"/>
                 </StackPanel>
