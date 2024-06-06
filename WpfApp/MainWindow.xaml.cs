@@ -45,6 +45,8 @@ namespace YourNamespace
                 StatsField.Visibility = Visibility.Collapsed;
                 TransactionForm.Visibility = Visibility.Collapsed;
                 ModifyTransactionPanel.Visibility = Visibility.Collapsed;
+                TransactionDetailsListBox.Visibility = Visibility.Collapsed;
+                TransactionsListBox.SelectedIndex = -1;
         }
 
         private void btnAddBudget_Click(object sender, RoutedEventArgs e)
@@ -100,6 +102,13 @@ namespace YourNamespace
                 StatsField.Visibility = Visibility.Collapsed;
                 TransactionForm.Visibility = Visibility.Collapsed;
                 ModifyTransactionPanel.Visibility = Visibility.Collapsed;
+                TransactionDetailsListBox.Visibility = Visibility.Collapsed;
+                TransactionsListBox.SelectedIndex = -1;
+
+                Salary.Text = null;
+                Expenses.Text = null;
+                Balance.Text = null;
+
                 MessageBox.Show("Pomyślnie usunięto budżet.");
             }
             else
@@ -134,14 +143,20 @@ namespace YourNamespace
                 BudgetForm.Visibility = Visibility.Collapsed;
                 StatsField.Visibility = Visibility.Collapsed;
                 ModifyTransactionPanel.Visibility = Visibility.Collapsed;
+                TransactionDetailsListBox.Visibility = Visibility.Collapsed;
+                TransactionsListBox.SelectedIndex = -1;
             }
         }
         private void btnShowCreateTransactionPanel_Click(object sender, SelectionChangedEventArgs e)
         {
-            if (BudgetListBox.SelectedItem != null)
+            if (BudgetListBox.SelectedItem is Budget selectedBudget)
             {
                 CreateTransactionPanel.Visibility = Visibility.Visible;
                 BudgetForm.Visibility = Visibility.Collapsed;
+                
+                Salary.Text = selectedBudget.MonthSalary.ToString();
+                Expenses.Text = selectedBudget.MonthExpenses.ToString();
+                Balance.Text = selectedBudget.Balance.ToString();
             }
         }
 
@@ -182,6 +197,9 @@ namespace YourNamespace
                 products.Clear();
                 TransactionName.Clear();
                 TransactionDate.Clear();
+
+                Expenses.Text = selectedBudget.MonthExpenses.ToString();
+                Balance.Text = selectedBudget.Balance.ToString();
             }
             else
             {
@@ -196,12 +214,15 @@ namespace YourNamespace
             {
                 StatsField.Visibility = Visibility.Collapsed;
                 ModifyTransactionPanel.Visibility = Visibility.Collapsed;
+                TransactionDetailsListBox.Visibility = Visibility.Collapsed;
                 TransactionDetailsListBox.ItemsSource = null;
 
                 var service = new BudgetServices();
                 try
                 {
                     service.RemoveTransaction(selectedTransaction.Id, selectedBudget.Id);
+                    Expenses.Text = selectedBudget.MonthExpenses.ToString();
+                    Balance.Text = selectedBudget.Balance.ToString();
                 }
                 catch (Exception ex)
                 {
@@ -210,6 +231,7 @@ namespace YourNamespace
                 }
 
                 TransactionsListBox.Items.Refresh();
+                TransactionsListBox.SelectedIndex = -1;
                 MessageBox.Show("Transakcja została pomyślnie usunięta");
             }
             else

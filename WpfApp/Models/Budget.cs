@@ -12,7 +12,7 @@ namespace Core.Models
         public string Name { get; private set; }
         public decimal MonthSalary { get; private set; }
         public decimal MonthExpenses { get; private set; }
-        public decimal Summary => MonthSalary - MonthExpenses;
+        public decimal Balance => MonthSalary - MonthExpenses;
 
         public List<Transaction> Transactions { get; private set; } = new List<Transaction>();
 

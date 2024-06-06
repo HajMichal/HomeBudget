@@ -11,7 +11,7 @@ namespace Core.DTOs
         public string Name { get; set; }
         public decimal MonthSalary { get; set; }
         public decimal MonthExpenses { get; set; }
-        public decimal Summary { get; set; }
+        public decimal Balance { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
     
@@ -23,7 +23,7 @@ namespace Core.DTOs
             Name = budget.Name,
             MonthSalary = budget.MonthSalary,
             MonthExpenses = budget.MonthExpenses,
-            Summary = budget.Summary,
+            Balance = budget.Balance,
             CreatedAt = budget.CreatedAt,
             ModifiedAt = budget.ModifiedAt,
             Transactions = budget.Transactions.Select(TransactionDTO.FromEntity)
