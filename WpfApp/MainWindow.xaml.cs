@@ -1,36 +1,24 @@
-﻿  using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Core.DTOs;
 using Core.Models;
 using Core.Services;
-using Core.Utils;
 
-namespace YourNamespace
+namespace WpfApp
 {
     public partial class MainWindow : Window
     {
         private ObservableCollection<CreateProductDTO> products;
         private DatabaseSingleton db;
+        private IBudgetService budgetService;
 
         public MainWindow()
         {
             InitializeComponent();
             LoadCategories();
             db = DatabaseSingleton.Instance;
+            budgetService = new BudgetServices();
 
             products = new ObservableCollection<CreateProductDTO>();
             ProductListBox.ItemsSource = products;
@@ -55,7 +43,7 @@ namespace YourNamespace
             {
                 MessageBox.Show("Zarobek należy wpisać jako liczbę");
             }
-            var service = new BudgetServices();
+            
             var newBudget = new CreateBudgetDTO 
             { 
                 Name = BudgetName.Text,
@@ -64,7 +52,7 @@ namespace YourNamespace
 
             try
             {
-                service.Create(newBudget);
+                budgetService.Create(newBudget);
             }
             catch(Exception ex)
             {
@@ -86,11 +74,10 @@ namespace YourNamespace
             if (BudgetListBox.SelectedItem is Budget selectedBudget)
             {
                 TransactionsListBox.SelectedItem = null;
-                var service = new BudgetServices();
 
                 try
                 {
-                    service.Remove(selectedBudget.Id);
+                    budgetService.Remove(selectedBudget.Id);
                 }
                 catch (Exception ex)
                 {
@@ -165,8 +152,6 @@ namespace YourNamespace
         {
             if (BudgetListBox.SelectedItem is Budget selectedBudget)
             {
-                var service = new BudgetServices();
-
                 DateTime? parsedDate = string.IsNullOrEmpty(TransactionDate.Text) ?
                      (DateTime?)null :
                      DateTime.Parse(TransactionDate.Text);
@@ -178,10 +163,10 @@ namespace YourNamespace
                      Category = (Category)TransactionCategory.SelectedItem,
                      Products = products.ToList(),
                 };
-                // todo zrobic tutaj string i dopiero w service sprawdzac date
+                
                 try
                 {
-                    service.AddTransaction(newTransaction, selectedBudget.Id);
+                    budgetService.AddTransaction(newTransaction, selectedBudget.Id);
                 }
                 catch (Exception ex)
                 {
@@ -216,11 +201,10 @@ namespace YourNamespace
                 ModifyTransactionPanel.Visibility = Visibility.Collapsed;
                 TransactionDetailsListBox.Visibility = Visibility.Collapsed;
                 TransactionDetailsListBox.ItemsSource = null;
-
-                var service = new BudgetServices();
+                
                 try
                 {
-                    service.RemoveTransaction(selectedTransaction.Id, selectedBudget.Id);
+                    budgetService.RemoveTransaction(selectedTransaction.Id, selectedBudget.Id);
                     Expenses.Text = selectedBudget.MonthExpenses.ToString();
                     Balance.Text = selectedBudget.Balance.ToString();
                 }

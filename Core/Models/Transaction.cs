@@ -2,9 +2,7 @@ using Core.Exceptions;
 using Core.Utils;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Windows;
 
 namespace Core.Models
 {
@@ -44,7 +42,7 @@ namespace Core.Models
 
         public override string ToString()
         {
-            return $"{Name} - {Category} -> {TotalCost} z³";
+            return $"{Name} - {Category} -> {TotalCost} zï¿½";
         }
     }
 }

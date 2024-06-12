@@ -2,7 +2,7 @@ namespace Core.Exceptions
 {
     public class PriceException : HomeBudgetException
     {
-        public PriceException() : base("Price must be greater than 0.")
+        public PriceException() : base("Cena musi być większa niz 0")
         {
         }
     }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
+            Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{4D10DD0C-8FB1-41DB-9663-F8D872DA2A13}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>Core</RootNamespace>
+        <AssemblyName>Core</AssemblyName>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <ItemGroup>
+      <Compile Include="DTOs\BudgetDTO.cs" />
+      <Compile Include="DTOs\CreateBudgetDTO.cs" />
+      <Compile Include="DTOs\CreateTransactionDTO.cs" />
+      <Compile Include="DTOs\ProductDTO.cs" />
+      <Compile Include="DTOs\TransactionDTO.cs" />
+      <Compile Include="Exceptions\HomeBudgetException.cs" />
+      <Compile Include="Exceptions\NameIsRequiredException.cs" />
+      <Compile Include="Exceptions\NotFoundException.cs" />
+      <Compile Include="Exceptions\PriceException.cs" />
+      <Compile Include="Models\AuditedEntity.cs" />
+      <Compile Include="Models\Budget.cs" />
+      <Compile Include="Models\Category.cs" />
+      <Compile Include="Models\DatabaseSingleton.cs" />
+      <Compile Include="Models\Product.cs" />
+      <Compile Include="Models\Transaction.cs" />
+      <Compile Include="Services\BudgetServices.cs" />
+      <Compile Include="Services\IBudgetService.cs" />
+      <Compile Include="Utils\StringExtensions.cs" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+</Project>

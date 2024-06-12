@@ -1,5 +1,3 @@
-using Core.Models;
-
 namespace Core.DTOs
 {
     public class CreateBudgetDTO

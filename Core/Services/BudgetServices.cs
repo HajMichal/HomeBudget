@@ -1,13 +1,13 @@
-using Core.DTOs;
 using Core.Exceptions;
 using Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Core.DTOs;
 
 namespace Core.Services
 {
-    public class BudgetServices
+    public class BudgetServices : IBudgetService
     {
         private DatabaseSingleton db => DatabaseSingleton.Instance;
         public IEnumerable<BudgetDTO> Get()
@@ -27,7 +27,7 @@ namespace Core.Services
             var budget = db.Budgets.FirstOrDefault(x => x.Id == budgetId);
         
             if (budget == null)
-                throw new NotFoundException(nameof(Budget));
+                throw new NotFoundException("Budzet");
         
             db.Budgets.Remove(budget);
         }
@@ -37,7 +37,7 @@ namespace Core.Services
             var budget = db.Budgets.FirstOrDefault(x => x.Id == budgetId);
         
             if (budget == null)
-                throw new NotFoundException(nameof(Budget));
+                throw new NotFoundException("Budzet");
         
             var newTransaction = Transaction.New(
                 transactionDto.Products.Select(p => p.ToEntity()).ToList(),
@@ -53,12 +53,12 @@ namespace Core.Services
             var budget = db.Budgets.FirstOrDefault(x => x.Id == budgetId);
 
             if (budget == null)
-                throw new NotFoundException(nameof(Budget));
+                throw new NotFoundException("Budzet");
         
             var transaction = budget.Transactions.Find(x => x.Id == transactionId);
         
             if (transaction == null)
-                throw new NotFoundException(nameof(Transaction));
+                throw new NotFoundException("Transakcja");
         
             budget.RemoveTransaction(transaction);
         }

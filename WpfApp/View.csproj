@@ -55,8 +55,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Services\BudgetServices.cs" />
-    <Compile Include="Utils\StringExtensions.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -65,27 +63,12 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DTOs\BudgetDTO.cs" />
-    <Compile Include="DTOs\CreateBudgetDTO.cs" />
-    <Compile Include="DTOs\CreateTransactionDTO.cs" />
-    <Compile Include="DTOs\ProductDTO.cs" />
-    <Compile Include="DTOs\TransactionDTO.cs" />
-    <Compile Include="Exceptions\HomeBudgetException.cs" />
-    <Compile Include="Exceptions\NameIsRequiredException.cs" />
-    <Compile Include="Exceptions\NotFoundException.cs" />
-    <Compile Include="Exceptions\PriceException.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\AuditedEntity.cs" />
-    <Compile Include="Models\Budget.cs" />
-    <Compile Include="Models\Category.cs" />
-    <Compile Include="Models\DatabaseSingleton.cs" />
-    <Compile Include="Models\Product.cs" />
-    <Compile Include="Models\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -111,6 +94,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{4d10dd0c-8fb1-41db-9663-f8d872da2a13}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

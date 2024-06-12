@@ -1,6 +1,6 @@
-using Core.Models;
 using System;
 using System.Collections.Generic;
+using Core.Models;
 
 namespace Core.DTOs
 {
@@ -23,9 +23,7 @@ namespace Core.DTOs
 
         public override string ToString()
         {
-            return $"{Name} - {Price} z³ - {Count} szt";
+            return $"{Name} - {Price} zï¿½ - {Count} szt";
         }
     }
-
-
 }
