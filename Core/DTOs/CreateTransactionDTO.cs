@@ -23,7 +23,7 @@ namespace Core.DTOs
 
         public override string ToString()
         {
-            return $"{Name} - {Price} z� - {Count} szt";
+            return $"{Name} - {Price} zł - {Count} szt";
         }
     }
 }
