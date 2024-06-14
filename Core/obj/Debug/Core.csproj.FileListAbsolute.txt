@@ -1,0 +1,6 @@
+C:\Programowanie\Domain\Core\bin\Debug\Core.dll
+C:\Programowanie\Domain\Core\bin\Debug\Core.pdb
+C:\Programowanie\Domain\Core\obj\Debug\Core.csproj.AssemblyReference.cache
+C:\Programowanie\Domain\Core\obj\Debug\Core.csproj.CoreCompileInputs.cache
+C:\Programowanie\Domain\Core\obj\Debug\Core.dll
+C:\Programowanie\Domain\Core\obj\Debug\Core.pdb

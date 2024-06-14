@@ -27,7 +27,7 @@ namespace Core.Services
             var budget = db.Budgets.FirstOrDefault(x => x.Id == budgetId);
         
             if (budget == null)
-                throw new NotFoundException("Budzet");
+                throw new NotFoundException("Bud¿et");
         
             db.Budgets.Remove(budget);
         }
@@ -37,7 +37,7 @@ namespace Core.Services
             var budget = db.Budgets.FirstOrDefault(x => x.Id == budgetId);
         
             if (budget == null)
-                throw new NotFoundException("Budzet");
+                throw new NotFoundException("Bud¿et");
         
             var newTransaction = Transaction.New(
                 transactionDto.Products.Select(p => p.ToEntity()).ToList(),
@@ -53,7 +53,7 @@ namespace Core.Services
             var budget = db.Budgets.FirstOrDefault(x => x.Id == budgetId);
 
             if (budget == null)
-                throw new NotFoundException("Budzet");
+                throw new NotFoundException("Bud¿et");
         
             var transaction = budget.Transactions.Find(x => x.Id == transactionId);
         

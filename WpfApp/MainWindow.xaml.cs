@@ -4,6 +4,8 @@ using System.Linq;
 using Core.DTOs;
 using Core.Models;
 using Core.Services;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace WpfApp
 {
@@ -108,13 +110,10 @@ namespace WpfApp
         {
             if (BudgetListBox.SelectedItem is Budget selectedBudget)
             {
-                if (StatsField.Visibility == Visibility.Collapsed)
-                {
                     BudgetForm.Visibility = Visibility.Collapsed;
                     TransactionForm.Visibility = Visibility.Collapsed;
                     StatsField.Visibility = Visibility.Visible;
                     TransactionsListBox.ItemsSource = selectedBudget.Transactions;
-                }
             }
             else
             {
